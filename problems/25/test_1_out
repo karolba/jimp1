@@ -1,0 +1,12 @@
+Matrix matrix1:
+  1.0   3.0 
+  5.0   7.0 
+Matrix matrix2:
+  2.0   4.0 
+  6.0   8.0 
+Matrix matrix1+matrix2:
+  3.0   7.0 
+ 11.0  15.0 
+Matrix matrix1*matrix2:
+ 20.0  28.0 
+ 52.0  76.0 

@@ -1,0 +1,24 @@
+[==========] Running 9 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 9 tests from TextTrimingTester
+[ RUN      ] TextTrimingTester.trimSpacesOnTheRight
+[       OK ] TextTrimingTester.trimSpacesOnTheRight
+[ RUN      ] TextTrimingTester.trimSpacesOnTheLeft
+[       OK ] TextTrimingTester.trimSpacesOnTheLeft
+[ RUN      ] TextTrimingTester.trimSpacesOnTheBothSides
+[       OK ] TextTrimingTester.trimSpacesOnTheBothSides
+[ RUN      ] TextTrimingTester.trimTabsOnTheRight
+[       OK ] TextTrimingTester.trimTabsOnTheRight
+[ RUN      ] TextTrimingTester.trimTabsOnTheBothSides
+[       OK ] TextTrimingTester.trimTabsOnTheBothSides
+[ RUN      ] TextTrimingTester.trimSpacesAndTabsOnTheBothSides
+[       OK ] TextTrimingTester.trimSpacesAndTabsOnTheBothSides
+[ RUN      ] TextTrimingTester.trimTextContainingOnlySpacesAndTabs
+[       OK ] TextTrimingTester.trimTextContainingOnlySpacesAndTabs
+[ RUN      ] TextTrimingTester.trimEmptyText
+[       OK ] TextTrimingTester.trimEmptyText
+[ RUN      ] TextTrimingTester.trimWhenNothing2Trimm
+[       OK ] TextTrimingTester.trimWhenNothing2Trimm
+[----------] Global test environment tear-down
+[==========] 9 tests from 1 test case ran.
+[  PASSED  ] 9 tests.

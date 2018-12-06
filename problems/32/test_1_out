@@ -1,0 +1,24 @@
+[==========] Running 9 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 9 tests from WordSplitingTest
+[ RUN      ] WordSplitingTest.nullProvidedInsteadOfText
+[       OK ] WordSplitingTest.nullProvidedInsteadOfText
+[ RUN      ] WordSplitingTest.singleWord
+[       OK ] WordSplitingTest.singleWord
+[ RUN      ] WordSplitingTest.singleNumber
+[       OK ] WordSplitingTest.singleNumber
+[ RUN      ] WordSplitingTest.fewWordsSplitedWithSingleSpace
+[       OK ] WordSplitingTest.fewWordsSplitedWithSingleSpace
+[ RUN      ] WordSplitingTest.fewWordsSplitedWithMultipleSpaces
+[       OK ] WordSplitingTest.fewWordsSplitedWithMultipleSpaces
+[ RUN      ] WordSplitingTest.sentenceWithPuncts
+[       OK ] WordSplitingTest.sentenceWithPuncts
+[ RUN      ] WordSplitingTest.mathematicalFormula
+[       OK ] WordSplitingTest.mathematicalFormula
+[ RUN      ] WordSplitingTest.sentenceStartingWithSpace
+[       OK ] WordSplitingTest.sentenceStartingWithSpace
+[ RUN      ] WordSplitingTest.textWithoutWords
+[       OK ] WordSplitingTest.textWithoutWords
+[----------] Global test environment tear-down
+[==========] 9 tests from 1 test case ran.
+[  PASSED  ] 9 tests.

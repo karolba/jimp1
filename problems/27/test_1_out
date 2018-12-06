@@ -1,0 +1,26 @@
+[==========] Running 10 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 10 tests from Task4BasenameTest
+[ RUN      ] Task4BasenameTest.fileNameWithSingleLetterExtention
+[       OK ] Task4BasenameTest.fileNameWithSingleLetterExtention
+[ RUN      ] Task4BasenameTest.fileNameWithExtention
+[       OK ] Task4BasenameTest.fileNameWithExtention
+[ RUN      ] Task4BasenameTest.fileWithLongerNameWithExtention
+[       OK ] Task4BasenameTest.fileWithLongerNameWithExtention
+[ RUN      ] Task4BasenameTest.complicatedFileName
+[       OK ] Task4BasenameTest.complicatedFileName
+[ RUN      ] Task4BasenameTest.fileNameWithRelativePathNoExtention
+[       OK ] Task4BasenameTest.fileNameWithRelativePathNoExtention
+[ RUN      ] Task4BasenameTest.fileNameWithRelativePathAndExtention
+[       OK ] Task4BasenameTest.fileNameWithRelativePathAndExtention
+[ RUN      ] Task4BasenameTest.fileNameWithAbsolutePathAndExtention
+[       OK ] Task4BasenameTest.fileNameWithAbsolutePathAndExtention
+[ RUN      ] Task4BasenameTest.fileNameWithoutExtention
+[       OK ] Task4BasenameTest.fileNameWithoutExtention
+[ RUN      ] Task4BasenameTest.fileNameWithMultipleDotsInName
+[       OK ] Task4BasenameTest.fileNameWithMultipleDotsInName
+[ RUN      ] Task4BasenameTest.fileNameFullyComplicated
+[       OK ] Task4BasenameTest.fileNameFullyComplicated
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test case ran.
+[  PASSED  ] 10 tests.

@@ -1,0 +1,33 @@
+Iteration: 0, tetrimoses: 0
+-12345678-
+|        |
+----------
+Iteration: 1, tetrimoses: 2
+-12345678-
+|**      |
+----------
+Iteration: 2, tetrimoses: 3
+-12345678-
+|***     |
+----------
+Iteration: 3, tetrimoses: 4
+-12345678-
+|****    |
+----------
+Iteration: 4, tetrimoses: 5
+-12345678-
+|*****   |
+----------
+Iteration: 5, tetrimoses: 6
+-12345678-
+|******  |
+----------
+Iteration: 6, tetrimoses: 7
+-12345678-
+|******* |
+----------
+Iteration: 7, tetrimoses: 8
+-12345678-
+|********|
+----------
+Game over!

@@ -1,0 +1,191 @@
+/************** file: #include "pointersSorting.h" **************/
+// author: Grzegorz Prowadzacy
+#ifndef POINTERS_SORTING_H
+#define POINTERS_SORTING_H
+
+#include <stddef.h> // size_t
+
+/** Tresc zadania:
+Panstwa zadaniem jest napisanie funkcji sortPointers(), przyjmie dwa wskazniki -na poczatek i za koniec tablicy i zwroci ilosc elementow. Poza tym funkcja ma za zadanie wstawic w parametrze pointers wskazniki do elementow tablicy z zakresu [from, to), ale w posortowanej kolejnosci. W razie podania odwrotnego zakresu (from > to) funkcja rowniez powinna sobie poradzic. W razie podania NULLa ma zostac zwrocone 0 i ma nie byc nic zmieniane z parametrem pointers.
+
+Prosze tez pamietac aby poza plikiem z rozwiazaniem zalaczyc rowniez ten plik naglowkowy o nazwie pointersSorting.h, bez robienia w nim jakichkolwiek zmian.
+**/
+
+typedef double T;
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+        size_t sortPointers(const T* from, const T* to, T*** pointers);
+#ifdef __cplusplus
+    }
+#endif
+
+#endif // POINTERS_SORTING_H
+
+
+
+/************** file: "pointersSortingTest.cc" **************/
+#include <string> // string, to_string()
+#include <algorithm> // is_sorted()
+
+#include <gtest/gtest.h>
+
+// #include "pointersSorting.h"
+
+
+namespace
+{
+    using namespace std;
+    using namespace ::testing;
+}
+
+static string array2String(const T* const array, size_t elements);
+static string arrayPointer2String(const T* const* array, size_t elements);
+void initialArayWithSmallRandomNumbers(T array[], size_t elements);
+static inline bool isLowerThan(const T* element1, const T* element2)
+{
+    return *element1 < *element2;
+}
+
+
+class PointerSortingTest : public ::testing::Test
+{
+};
+
+TEST_F(PointerSortingTest, testSortedArray)
+{
+    constexpr T array[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    T **sortedPointers = NULL;
+    constexpr size_t elementCount = sizeof(array)/sizeof(*array);
+    
+    
+    ASSERT_EQ(elementCount, sortPointers(array, array+elementCount, &sortedPointers));
+    ASSERT_TRUE(is_sorted(sortedPointers, sortedPointers+elementCount, isLowerThan)) << array2String(array, elementCount) << ", " << arrayPointer2String(sortedPointers, elementCount);
+}
+
+
+TEST_F(PointerSortingTest, testRandomArray)
+{
+    constexpr size_t elementCount = 10;
+    T array[elementCount] = {};
+    
+    initialArayWithSmallRandomNumbers(array, elementCount);
+    
+    T **sortedPointers = NULL;
+    
+    ASSERT_EQ(elementCount, sortPointers(array, array+elementCount, &sortedPointers));
+    ASSERT_TRUE(is_sorted(sortedPointers, sortedPointers+elementCount, isLowerThan)) << array2String(array, elementCount) << ", " << arrayPointer2String(sortedPointers, elementCount);
+    
+    free(sortedPointers);
+}
+
+TEST_F(PointerSortingTest, testSingleElementArray)
+{
+    constexpr T array[] = {44};
+    constexpr size_t elementCount = sizeof(array)/sizeof(*array);
+    
+    T **sortedPointers = NULL;
+    
+    ASSERT_EQ(elementCount, sortPointers(array, array+elementCount, &sortedPointers));
+    ASSERT_TRUE(is_sorted(sortedPointers, sortedPointers+elementCount, isLowerThan)) << array2String(array, elementCount) << ", " << arrayPointer2String(sortedPointers, elementCount);
+    
+    free(sortedPointers);
+}
+
+TEST_F(PointerSortingTest, testBigRandomArray)
+{
+    constexpr size_t elementCount = 11111;
+    T array[elementCount] = {};
+    
+    initialArayWithSmallRandomNumbers(array, elementCount);
+    
+    T **sortedPointers = NULL;
+    
+    ASSERT_EQ(elementCount, sortPointers(array, array+elementCount, &sortedPointers));
+    ASSERT_TRUE(is_sorted(sortedPointers, sortedPointers+elementCount, isLowerThan)) << array2String(array, elementCount) << ", " << arrayPointer2String(sortedPointers, elementCount);
+    
+    free(sortedPointers);
+}
+
+TEST_F(PointerSortingTest, testReverseRangeOfElements_FromHasGreaterAddressThanTo)
+{
+    constexpr size_t elementCount = 9;
+    T array[elementCount] = {};
+    
+    initialArayWithSmallRandomNumbers(array, elementCount);
+    
+    T **sortedPointers = NULL;
+    
+    ASSERT_EQ(elementCount, sortPointers(array+elementCount, array, &sortedPointers));
+    ASSERT_TRUE(is_sorted(sortedPointers, sortedPointers+elementCount, isLowerThan)) << array2String(array, elementCount) << ", " << arrayPointer2String(sortedPointers, elementCount);
+    
+    free(sortedPointers);
+}
+
+TEST_F(PointerSortingTest, nullInsteadOfArray)
+{
+    constexpr size_t elementCount = 0;
+    constexpr T* array = NULL;
+        
+    T **sortedPointers = NULL;
+    
+    ASSERT_EQ(elementCount, sortPointers(array, array+elementCount, &sortedPointers));
+    ASSERT_EQ(NULL, sortedPointers);
+    ASSERT_TRUE(is_sorted(sortedPointers, sortedPointers+elementCount, isLowerThan)) << array2String(array, elementCount) << ", " << arrayPointer2String(sortedPointers, elementCount);
+    
+    free(sortedPointers);
+}
+
+////////////////////////////////////////////////////////////////////////////////// main function:
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    GTEST_FLAG(print_time) = false;
+    return RUN_ALL_TESTS();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////// function definitions:
+static string array2String(const T* const array, size_t elements)
+{
+    string s = "array = {";
+    if (array)
+    {
+        s += to_string(array[0]);
+        for (size_t i=1; i<elements; ++i)
+        {
+            s += ", " + to_string(array[i]);
+        }
+    }
+    s += "}";
+    
+    return s;
+}
+
+static string arrayPointer2String(const T* const* array, size_t elements)
+{
+    string s = "pointers = {";
+    if (array)
+    {
+        s += to_string(*array[0]);
+        for (size_t i=1; i<elements; ++i)
+        {
+            s += ", " + to_string(*array[i]);
+        }
+    }
+    s += "}";
+    
+    return s;
+}
+
+void initialArayWithSmallRandomNumbers(T array[], size_t elements)
+{
+    for (size_t i=0; i<elements; ++i)
+    {
+        array[i] = rand()%10;
+    }
+}
+
+// vim: ft=cpp

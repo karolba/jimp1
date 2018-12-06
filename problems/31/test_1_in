@@ -1,0 +1,254 @@
+/************** file: #include "wordSorting.h" **************/
+// author: Grzegorz Prowadzacy
+#ifndef WORD_SORTING_H
+#define WORD_SORTING_H
+
+/** Tresc zadania:
+Panstwa zadaniem jest napisanie funkcji sortWords(), ktora zrobi to, co mowi jej nazwa, czyli przyjmie tablice wyrazow i je posortuje zwracajac informacje ile w sumie jest tam wyrazow. Ilosc wyrazow poznamy po tym, ze ostatni element wskazuje na NULL. 
+
+Przypadki testowe:
+    - Prosze w razie podania words==NULL zwrocic 0 slow.
+
+Prosze tez pamietac aby poza plikiem z rozwiazaniem zalaczyc rowniez ten plik naglowkowy o nazwie wordSorting.h, bez robienia w nim jakichkolwiek zmian.
+
+Polecam uzyc gotowca do porownywania tekstu z: http://www.cplusplus.com/reference/cstring/
+**/
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+        long sortWords(char **words);
+#ifdef __cplusplus
+    }
+#endif
+
+#endif // WORD_SORTING_H
+
+
+
+/************** file: "wordSortingTest.cc" **************/
+#include <cstdarg>
+#include <string>
+
+#include <gtest/gtest.h>
+
+// #include "wordSorting.h"
+
+
+namespace
+{
+    using namespace std;
+    using namespace ::testing;
+}
+
+static void compareWordsLists(const char* const* words, const char* const* wordsExpected);
+static string words2Text(const char* const* words);
+static char** getArrayOfWords(int n, ...);
+static void deallocateMemory(char** words);
+
+
+class WordSortingTest : public ::testing::Test
+{
+};
+
+TEST_F(WordSortingTest, nullProvidedInsteadOfWords)
+{    
+    char **words = NULL;
+    constexpr size_t wordCount = 0;
+    
+    ASSERT_EQ(wordCount, sortWords(words)) << "words: " << words2Text(words);
+}
+
+TEST_F(WordSortingTest, firstWordIsNull)
+{    
+    char *words[] = 
+    {
+        NULL
+    };
+    constexpr size_t wordCount = 0;
+
+    ASSERT_EQ(wordCount, sortWords(words)) << "words: " << words2Text(words);
+}
+
+TEST_F(WordSortingTest, singleWordLowerCase)
+{
+    constexpr const char *wordsSorted[] = 
+    {
+        "mysikrolik",
+        NULL
+    };
+    constexpr size_t wordCount = sizeof(wordsSorted)/sizeof(wordsSorted[0])-1;
+    
+    char **words = getArrayOfWords(wordCount, "mysikrolik");
+
+    ASSERT_EQ(wordCount, sortWords(words)) << "words: " << words2Text(words);
+    compareWordsLists(words, wordsSorted);
+    
+    deallocateMemory(words);
+}
+
+TEST_F(WordSortingTest, singleWordMixedCases)
+{
+    constexpr size_t wordCount = 1;
+
+    char **words = getArrayOfWords(wordCount, "Homer");
+    constexpr const char *wordsSorted[] = 
+    {
+        "Homer",
+        NULL
+    };
+
+    ASSERT_EQ(wordCount, sortWords(words)) << "words: " << words2Text(words);
+    compareWordsLists(words, wordsSorted);
+    
+    deallocateMemory(words);
+}
+
+TEST_F(WordSortingTest, twoWordsSorted)
+{
+    constexpr size_t wordCount = 2;
+
+    char **words = getArrayOfWords(wordCount, "Edmund", "Karol"); /// Wojtylla's family
+    constexpr const char *wordsSorted[] = 
+    {
+        "Edmund",
+        "Karol",
+        NULL
+    };
+
+    ASSERT_EQ(wordCount, sortWords(words)) << "words: " << words2Text(words);
+    compareWordsLists(words, wordsSorted);
+    
+    deallocateMemory(words);
+}
+
+TEST_F(WordSortingTest, twoWords)
+{
+    constexpr size_t wordCount = 2;
+
+    char **words = getArrayOfWords(wordCount, "Karol", "Edmund"); /// Wojtylla's family
+    constexpr const char *wordsSorted[] = 
+    {
+        "Edmund",
+        "Karol",
+        NULL
+    };
+
+    ASSERT_EQ(wordCount, sortWords(words)) << "words: " << words2Text(words);
+    compareWordsLists(words, wordsSorted);
+    
+    deallocateMemory(words);
+}
+
+TEST_F(WordSortingTest, multipleWords_extinctedAnimalsInPoland)
+{
+    constexpr size_t wordCount = 16;
+
+    char **words = getArrayOfWords(wordCount, "tur", "tarpan", "drop", "jaszczurka zielona", "jesiotr zachodni", "karliczka", "kobczyk", "krzyzodziób sosnowy", "norka europejska", "nur czarnoszyi", "pardwa mszarna", "pustuleczka", "sep plowy", "siewka zlota", "strepet", "susel moregowany"); /// https://pl.wikipedia.org/wiki/Polska_czerwona_ksi%C4%99ga_zwierz%C4%85t._Kr%C4%99gowce
+    constexpr const char *wordsSorted[] = 
+    {
+        "drop", 
+        "jaszczurka zielona",
+        "jesiotr zachodni",
+        "karliczka",
+        "kobczyk",
+        "krzyzodziób sosnowy",
+        "norka europejska",
+        "nur czarnoszyi",
+        "pardwa mszarna",
+        "pustuleczka",
+        "sep plowy",
+        "siewka zlota",
+        "strepet",
+        "susel moregowany",
+        "tarpan",
+        "tur",
+        NULL
+    };
+
+    ASSERT_EQ(wordCount, sortWords(words)) << "words: " << words2Text(words);
+    compareWordsLists(words, wordsSorted);
+    
+    deallocateMemory(words);
+}
+
+////////////////////////////////////////////////////////////////////////////////// main function:
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    GTEST_FLAG(print_time) = false;
+    return RUN_ALL_TESTS();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////// function definitions:
+static void compareWordsLists(const char* const* words, const char* const* wordsExpected)
+{
+    size_t i;
+    for(i=0; words[i] && wordsExpected[i]; ++i)
+    {
+        EXPECT_STREQ(wordsExpected[i], words[i]) << "i=" << i << ": " << words2Text(words);
+    }
+    ASSERT_EQ(NULL, words[i]);
+    ASSERT_EQ(NULL, wordsExpected[i]);
+}
+
+static string words2Text(const char* const* words)
+{
+    if (nullptr == words)
+    {
+        return "(NULL)";
+    }
+    if (nullptr == words[0])
+    {
+        return "[NULL]";
+    }
+    string text = words[0];
+    for(size_t i=1; words[i]; ++i)
+    {
+        text += ", ";
+        text += words[i];
+    }
+    return text;
+}
+
+static char* getCopyOfText(const char* text)
+{
+    unsigned textLength = strlen(text) + 1;
+    auto textCopy = (char*)malloc(sizeof(char)*textLength);
+    strncpy(textCopy, text, textLength+1);
+    return textCopy;
+}
+
+static char** getArrayOfWords(int n, ...)
+{
+    auto words = (char**)malloc(sizeof(char*)*(n+1));
+    va_list vl;
+    va_start(vl, n);
+    for (int i=0; i<n; ++i)
+    {
+        const char* word = va_arg(vl, char*);
+        words[i] = getCopyOfText(word);
+    }
+    va_end(vl);
+    words[n] = nullptr;
+    
+    return words;
+}
+
+static void deallocateMemory(char** words)
+{
+    if (nullptr == words)
+    {
+        return;
+    }
+    
+    for (int i=0; words[i]; ++i)
+    {
+        free(words[i]);
+    }
+    free(words);
+}
+
+// vim: ft=cpp

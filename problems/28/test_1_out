@@ -1,0 +1,26 @@
+[==========] Running 10 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 10 tests from Task5TextSearchingTest
+[ RUN      ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromBeginning
+[       OK ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromBeginning
+[ RUN      ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromTheEnd
+[       OK ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromTheEnd
+[ RUN      ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromBeginningWordInTheBeginning
+[       OK ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromBeginningWordInTheBeginning
+[ RUN      ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromBeginningWordInTheEnd
+[       OK ] Task5TextSearchingTest.searchWordInTheSameLetterCaseFromBeginningWordInTheEnd
+[ RUN      ] Task5TextSearchingTest.searchWordInDifferentLetterCaseFromBeginning
+[       OK ] Task5TextSearchingTest.searchWordInDifferentLetterCaseFromBeginning
+[ RUN      ] Task5TextSearchingTest.findFirstOccurenceOfWordInTheSameLetterCase
+[       OK ] Task5TextSearchingTest.findFirstOccurenceOfWordInTheSameLetterCase
+[ RUN      ] Task5TextSearchingTest.findLastOccurenceOfWordInTheSameLetterCase
+[       OK ] Task5TextSearchingTest.findLastOccurenceOfWordInTheSameLetterCase
+[ RUN      ] Task5TextSearchingTest.findFirstOccurenceOfWordDifferentLetterCase
+[       OK ] Task5TextSearchingTest.findFirstOccurenceOfWordDifferentLetterCase
+[ RUN      ] Task5TextSearchingTest.findLastOccurenceOfWordDifferentLetterCase
+[       OK ] Task5TextSearchingTest.findLastOccurenceOfWordDifferentLetterCase
+[ RUN      ] Task5TextSearchingTest.searchWordWhenTheWordNotInText
+[       OK ] Task5TextSearchingTest.searchWordWhenTheWordNotInText
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test case ran.
+[  PASSED  ] 10 tests.

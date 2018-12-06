@@ -1,0 +1,20 @@
+[==========] Running 7 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 7 tests from WordSortingTest
+[ RUN      ] WordSortingTest.nullProvidedInsteadOfWords
+[       OK ] WordSortingTest.nullProvidedInsteadOfWords
+[ RUN      ] WordSortingTest.firstWordIsNull
+[       OK ] WordSortingTest.firstWordIsNull
+[ RUN      ] WordSortingTest.singleWordLowerCase
+[       OK ] WordSortingTest.singleWordLowerCase
+[ RUN      ] WordSortingTest.singleWordMixedCases
+[       OK ] WordSortingTest.singleWordMixedCases
+[ RUN      ] WordSortingTest.twoWordsSorted
+[       OK ] WordSortingTest.twoWordsSorted
+[ RUN      ] WordSortingTest.twoWords
+[       OK ] WordSortingTest.twoWords
+[ RUN      ] WordSortingTest.multipleWords_extinctedAnimalsInPoland
+[       OK ] WordSortingTest.multipleWords_extinctedAnimalsInPoland
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test case ran.
+[  PASSED  ] 7 tests.

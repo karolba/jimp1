@@ -1,0 +1,101 @@
+/************** file: #include "primeChecking.h" **************/
+// author: Grzegorz Prowadzacy
+#ifndef ISODDPRIMENUMBER_H
+#define ISODDPRIMENUMBER_H
+
+/** Tresc zadania:
+Panstwa zadaniem jest napisanie funkcji isOddPrimeNumber(), ktora zwroci true dla kazdej liczby pierwszej nieparzystej.
+
+Prosze tez pamietac aby poza plikiem z rozwiazaniem zalaczyc rowniez ten plik naglowkowy o nazwie primeChecking.h, bez robienia w nim jakichkolwiek zmian.
+**/
+
+#ifdef __STDC__
+    #include <stdbool.h>
+#endif
+
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+        bool isOddPrimeNumber(int number);
+#ifdef __cplusplus
+    }
+#endif
+
+#endif // ISODDPRIMENUMBER_H
+/************** file: "primeCheckingTest.cc" **************/
+#include <gtest/gtest.h>
+
+//#include "primeChecking.h"
+
+namespace
+{
+    using namespace std;
+    using namespace ::testing;
+}
+
+
+class PrimeTester : public ::testing::Test
+{
+};
+
+TEST_F(PrimeTester, smallPrimeNumber)
+{
+    ASSERT_TRUE(isOddPrimeNumber(3));
+}
+
+TEST_F(PrimeTester, smallPrimeNumber2)
+{
+    ASSERT_TRUE(isOddPrimeNumber(5));
+}
+
+TEST_F(PrimeTester, primeNumber)
+{
+    ASSERT_TRUE(isOddPrimeNumber(101));
+}
+
+TEST_F(PrimeTester, bigPrimeNumber)
+{
+    ASSERT_TRUE(isOddPrimeNumber(991));
+}
+
+TEST_F(PrimeTester, primeNumberWithDecimal)
+{
+    ASSERT_TRUE(isOddPrimeNumber(41.41));
+}
+
+TEST_F(PrimeTester, smallNotPrimeNumber)
+{
+    ASSERT_FALSE(isOddPrimeNumber(1));
+}
+
+TEST_F(PrimeTester, smallPrimeOddNumber)
+{
+    ASSERT_FALSE(isOddPrimeNumber(2));
+}
+
+TEST_F(PrimeTester, bigNotPrimeNumber)
+{
+    ASSERT_FALSE(isOddPrimeNumber(999));
+}
+
+TEST_F(PrimeTester, zero)
+{
+    ASSERT_FALSE(isOddPrimeNumber(0));
+}
+
+TEST_F(PrimeTester, negativeNumber)
+{
+    ASSERT_FALSE(isOddPrimeNumber(-1));
+}
+
+
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    GTEST_FLAG(print_time) = false;
+    return RUN_ALL_TESTS();
+}
+
+// vim: ft=cpp

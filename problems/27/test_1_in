@@ -1,0 +1,183 @@
+/************** file: #include "basename.h" **************/
+// author: Grzegorz Prowadzacy
+
+#ifndef BASENAME_H
+#define BASENAME_H
+
+/**
+Tresc zadania:
+Panstwa zadaniem jest napisanie funkcji baseName(), ktora dla podanej sciezki pliku zwroci nazwe:
+1) nie zawierajaca rozszerzenia
+2) nie zawierajaca sciezki do pliku
+3) funkcja ma zwrocic odpowiednia wartosc ze zbioru ponizej
+
+Polecam przejrzec funkcje z http://www.cplusplus.com/reference/cstring/ i wybrac sobie cos do uzycia.
+
+Prosze tez pamietac aby poza plikiem z rozwiazaniem zalaczyc rowniez ten plik naglowkowy o nazwie basename.h, bez robienia w nim jakichkolwiek zmian.
+
+Polecam dla wygody:
+- Zrobic osobne funkcje do przycinania od przodu i przycinania od typu
+**/
+
+enum FileNameInfo
+{
+    FILE_NAME_NOT_CHANGED       = 0x00,
+    FILE_NAME_REMOVED_EXTENTION = 0x01,
+    FILE_NAME_REMOVED_PATH      = 0x02,
+    FILE_NAME_REMOVED_EXTENTION_AND_PATH = FILE_NAME_REMOVED_EXTENTION + FILE_NAME_REMOVED_PATH
+};
+
+#ifdef __STDC__
+    typedef enum FileNameInfo FileNameInfo;
+#endif
+
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+        FileNameInfo baseName(const char filePath[], char fileBaseName[]);
+#ifdef __cplusplus
+    }
+#endif
+
+
+#ifdef _WIN32
+    const char PATH_SEPARATOR = '\\';
+#elif __linux__ 
+    const char PATH_SEPARATOR = '/';
+#else
+    #error "Unsupported Operation System!"
+#endif
+
+
+#endif // BASENAME_H
+
+
+/************** file: "basenameTest.cc" **************/
+#include <iomanip> // quoted()
+#include <gtest/gtest.h>
+
+// #include "basename.h"
+
+
+namespace
+{
+    using namespace std;
+    using namespace ::testing;
+}
+
+
+class Task4BasenameTest : public ::testing::Test
+{
+};
+
+TEST_F(Task4BasenameTest, fileNameWithSingleLetterExtention)
+{
+    constexpr const char filePath[]    = "a.x";
+    constexpr const char exepectedFileBaseName[] = "a";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileNameWithExtention)
+{
+    constexpr const char filePath[]    = "a.exe";
+    constexpr const char exepectedFileBaseName[] = "a";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileWithLongerNameWithExtention)
+{
+    constexpr const char filePath[]    = "file.txt";
+    constexpr const char exepectedFileBaseName[] = "file";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, complicatedFileName)
+{
+    constexpr const char filePath[]    = "George_master thesis.pdf";
+    constexpr const char exepectedFileBaseName[] = "George_master thesis";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileNameWithRelativePathNoExtention)
+{
+    constexpr const char filePath[]    = "bin/Debug/a";
+    constexpr const char exepectedFileBaseName[] = "a";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_PATH, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileNameWithRelativePathAndExtention)
+{
+    constexpr const char filePath[]    = "bin/Debug/a.exe";
+    constexpr const char exepectedFileBaseName[] = "a";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION_AND_PATH, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileNameWithAbsolutePathAndExtention)
+{
+    constexpr const char filePath[]    = "C:/kartaSD/Dropbox/PRZEDMIOTY_DOKTORANCKIE/PK/wdp/Kolokwium/main.cc";
+    constexpr const char exepectedFileBaseName[] = "main";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION_AND_PATH, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileNameWithoutExtention)
+{
+    constexpr const char filePath[]    = "noExtentionFile";
+    constexpr const char exepectedFileBaseName[] = "noExtentionFile";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_NOT_CHANGED, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileNameWithMultipleDotsInName)
+{
+    constexpr const char filePath[]    = "Chlopaki.nie.placza.(2000).avi";
+    constexpr const char exepectedFileBaseName[] = "Chlopaki.nie.placza.(2000)";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+TEST_F(Task4BasenameTest, fileNameFullyComplicated)
+{
+    constexpr const char filePath[]    = "../bin/My programs/kolokwium.WDP/correct.all tests passed file..exe";
+    constexpr const char exepectedFileBaseName[] = "correct.all tests passed file.";
+    char fileBaseName[10 * sizeof(filePath)] = {};
+
+    ASSERT_EQ(FILE_NAME_REMOVED_EXTENTION_AND_PATH, baseName(filePath, fileBaseName)) << "Input filename: " << filePath;
+    ASSERT_STREQ(exepectedFileBaseName, fileBaseName);
+}
+
+
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    GTEST_FLAG(print_time) = false;
+    return RUN_ALL_TESTS();
+}
+
+// vim: ft=cpp

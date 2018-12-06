@@ -1,0 +1,299 @@
+/************** file: #include "array.h" **************/
+// author: Grzegorz Prowadzacy
+
+#ifndef ARRAY_H
+#define ARRAY_H
+
+#include <stddef.h> // size_t
+#include <stdint.h> // int_fast32_t
+#include <stdbool.h> // true, false, bool
+
+/** Tresc zadania: (UWAGA: To bardzo wazne zadanie, w srodku nocy nalezy umiec takie zadania robic!)
+Panstwa zadaniem jest napisanie tablicy, ktora w momencie inicjalizacji ma ustawiony rozmiar, ktory pamieta (Array), oraz funkcji do jej obslugi.
+Nasza implementacja jest poniekąd wzorowana na C++owej std::array: http://www.cplusplus.com/reference/array/array/ , ale nie implementujemy jej dokladnie.
+Ma to byc struktura Array, ktora zawiera w sobie:
+    - wskaznik na tablice dynamiczna (np. z ang. data)
+    - rozmiar tablicy (ang. size)
+
+Poza struktura Array prosze zaimplementowac pewne funkcje, ktorych deklaracje i opisy znajduja sie ponizej.
+
+Prosze tez pamietac aby poza plikiem z rozwiazaniem zalaczyc rowniez ten plik naglowkowy o nazwie Array.h, bez robienia w nim jakichkolwiek zmian.
+
+Podpowiedzi:
+    - polecam ogarnac operator trojargumentowy: ?:,
+    - polecam ogarnac funkcje calloc()
+**/
+
+
+typedef int_fast32_t T;
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+        struct Array;
+        typedef struct Array Array;
+
+        /// Costruction and destruction functions:
+        // funkcja, ktora zwraca Array zaalokowany dynamicznie, z zaalokowana tablica dla zadanego rozmiaru, wartosci elementow tablicy maja byc zerowane
+        Array* constructArray(size_t size);
+        // funkcja, ktora zwalnia zaalokowana pamiec na elementy Arraya i ustawia size i date w Array'u odpowiednio na 0 i NULL
+        void destruct(Array* array);
+
+        /// Capasity:
+        // funkcja zwraca ilosc elementow Arraya, zupelnie jak: http://www.cplusplus.com/reference/array/array/size/
+        size_t size(const Array* array);
+        // funkcja zwracajaca true jesli mamy do czynienia z pustym Array, zupelnie jak: http://www.cplusplus.com/reference/array/array/empty/
+        bool empty(const Array* array);
+
+        ///  Element access functions:
+        // funkcja zwraca wskaznik do elementu Array'a o zadanym indeksie, w razie wyjscia poza tablice zwraca NULL, podobna do: http://www.cplusplus.com/reference/array/array/at/
+        T* at(Array* array, size_t index);
+        // zwraca wskaznik na pierwszy element Array'a, podobna do: http://www.cplusplus.com/reference/array/array/front/
+        T* front(Array* array);
+        // jw. ale na ostatni element Array'a, podobna do: www.cplusplus.com/reference/array/array/back/
+        T* back(Array* array);
+        // zwraca wskaznik do wewnetrznej tablicy Array'a, podobnie do: http://www.cplusplus.com/reference/array/array/data/
+        const T* data(Array* array);
+
+        ///  Modifiers functions:
+        // ustawia wszystkim elementom tablicy zadana wartosc, podobnie do: http://www.cplusplus.com/reference/array/array/fill/
+        void fill(Array* array, T value);
+        // funkcja kopiuje wartosci tablicy na nasze Array, rozmiary tablicy i Array sie zgadzaja
+        void assign(Array* array, const T tab[], size_t tabSize);
+        // funkcja reorganizujaca elementy wg zasady "Ci co pierwsi beda ostatnimi, a ci co ostatni pierwszymi"
+        void reverse(Array* array);
+
+        /// Optional functions: (tych funkcji nie musza Panstwo implementowac, ale ambitni moga). Pplecam aby funkcje generowaly tekst w formacie:
+        /// array(3) = {1, 2, 3}
+        char* toText(Array* array);
+        void print(Array* array);
+        // funkcja wykonujaca gleboka kopie naszego Array wraz z jego elementami:
+        Array* cloneArray(const Array* array);
+
+#ifdef __cplusplus
+    }
+#endif
+
+#endif // ARRAY_H
+
+
+/************** file: "arrayTest.cc" **************/
+#include <string> // string, to_string()
+#include <algorithm> // equal(), count()
+
+#include <gtest/gtest.h>
+// #include "array.h"
+
+namespace
+{
+using namespace std;
+using namespace ::testing;
+}
+
+
+static string array2String(const T* const array, size_t elements);
+static string Array2String(Array *v);
+
+
+class ArrayTest : public ::testing::Test
+{
+};
+
+TEST_F(ArrayTest, constructionAndDestruction)
+{
+    const size_t elements = 10;
+    Array* a = constructArray(elements);
+
+    ASSERT_EQ(elements, size(a));
+    ASSERT_EQ(false, empty(a));
+
+    destruct(a);
+    ASSERT_EQ(0, size(a));
+    ASSERT_EQ(true, empty(a));
+
+    free(a);
+}
+
+TEST_F(ArrayTest, addingArrayOfElements)
+{
+    const T arr[] = {1, 5, 7, 9, 131};
+    const size_t arrSize = sizeof(arr)/sizeof(arr[0]);
+    Array* a = constructArray(arrSize);
+
+    ASSERT_EQ(arrSize, size(a));
+    ASSERT_EQ(false, empty(a));
+
+    for (size_t i=0; i<arrSize; ++i)
+    {
+        *at(a, i) = arr[i];
+    }
+    ASSERT_EQ(arrSize, size(a));
+
+    ASSERT_NE(nullptr, front(a));
+    ASSERT_EQ(arr[0], *front(a));
+
+    ASSERT_NE(nullptr, back(a));
+    ASSERT_EQ(arr[arrSize-1], *back(a));
+
+    for (size_t i=0; i<arrSize; ++i)
+    {
+        ASSERT_NE(nullptr, at(a, i)) << "index: " << i << ", " << Array2String(a) << ", " << array2String(arr, arrSize);
+        EXPECT_EQ(*at(a, i), arr[i]) << "index: " << i << ", " << Array2String(a) << ", " << array2String(arr, arrSize);
+    }
+
+    ASSERT_TRUE(equal(front(a), back(a)+1, arr))
+            << array2String(arr, arrSize) << ", "
+            << Array2String(a);
+
+    destruct(a);
+    free(a);
+}
+
+TEST_F(ArrayTest, functionAssign)
+{
+    const T arr[] = {1, 5, 7, 9, 131};
+    const size_t arrSize = sizeof(arr)/sizeof(arr[0]);
+    Array* a = constructArray(arrSize);
+
+    assign(a, arr, arrSize);
+
+    ASSERT_EQ(arrSize, size(a));
+    ASSERT_EQ(false, empty(a));
+
+    ASSERT_NE(nullptr, front(a));
+    ASSERT_EQ(arr[0], *front(a));
+
+    ASSERT_NE(nullptr, back(a));
+    ASSERT_EQ(arr[arrSize-1], *back(a));
+
+    for (size_t i=0; i<arrSize; ++i)
+    {
+        ASSERT_NE(nullptr, at(a, i)) << "index: " << i << ", " << Array2String(a) << ", " << array2String(arr, arrSize);
+        EXPECT_EQ(*at(a, i), arr[i]) << "index: " << i << ", " << Array2String(a) << ", " << array2String(arr, arrSize);
+    }
+    ASSERT_TRUE(equal(front(a), back(a)+1, arr))
+            << array2String(arr, arrSize) << ", "
+            << Array2String(a);
+
+    destruct(a);
+    free(a);
+}
+
+TEST_F(ArrayTest, reverseArray)
+{
+    const T arr[] = {1, 5, 7, 9, 131};
+    const size_t arrSize = sizeof(arr)/sizeof(arr[0]);
+    Array* a = constructArray(arrSize);
+
+    assign(a, arr, arrSize);
+
+    reverse(a);
+
+    ASSERT_EQ(arrSize, size(a));
+    ASSERT_EQ(false, empty(a));
+
+    ASSERT_NE(nullptr, front(a));
+    ASSERT_EQ(arr[arrSize-1], *front(a));
+
+    ASSERT_NE(nullptr, back(a));
+    ASSERT_EQ(arr[0], *back(a));
+
+    for (size_t i=0; i<arrSize; ++i)
+    {
+        ASSERT_NE(nullptr, at(a, i)) << "index: " << i << ", " << Array2String(a) << ", " << array2String(arr, arrSize);
+        ASSERT_EQ(*at(a, i), arr[arrSize-i-1]) << "index: " << i << ", " << Array2String(a) << ", " << array2String(arr, arrSize);
+    }
+
+    destruct(a);
+    free(a);
+}
+
+TEST_F(ArrayTest, fill)
+{
+    const size_t elements = 10000;
+    Array* a = constructArray(elements);
+
+    ASSERT_EQ(elements, size(a));
+
+    const T element = 444;
+    fill(a, element);
+
+    ASSERT_EQ(elements, size(a));
+    for(size_t i=0; i<elements; ++i)
+    {
+        ASSERT_NE(nullptr, at(a, i)) << "index: " << i << ", " << Array2String(a);
+        EXPECT_EQ(element, *at(a, i)) << "index: " << i << ", " << Array2String(a);
+    }
+    ASSERT_EQ(elements, count(front(a), back(a)+1, element));
+
+    destruct(a);
+    free(a);
+}
+
+TEST_F(ArrayTest, emptyArray)
+{
+    const size_t elements = 0;
+    Array* a = constructArray(elements);
+
+    ASSERT_EQ(elements, size(a));
+    ASSERT_TRUE(empty(a));
+
+    ASSERT_EQ(nullptr, at(a, 0));
+    ASSERT_NE(nullptr, front(a));
+    ASSERT_NE(nullptr, back(a));
+
+    destruct(a);
+    free(a);
+}
+
+////////////////////////////////////////////////////////////////////////////////// main function:
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    GTEST_FLAG(print_time) = false;
+    return RUN_ALL_TESTS();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////// function definitions:
+static string array2String(const T* const array, size_t elements)
+{
+    string s = "array = {";
+    if (array)
+    {
+        s += to_string(array[0]);
+        for (size_t i=1; i<elements; ++i)
+        {
+            s += ", " + to_string(array[i]);
+        }
+    }
+    s += "}";
+
+    return s;
+}
+
+static string Array2String(Array* v)
+{
+    if (v)
+    {
+        string s = "Array (" + to_string(size(v)) + ") = {";
+        if (!empty(v))
+        {
+            s += to_string(*at(v, 0));
+            for (size_t i=1; i<size(v); ++i)
+            {
+                s += ", " + to_string(*at(v, i));
+            }
+        }
+        s += "}";
+
+        return s;
+    }
+    else
+    {
+        return "{}";
+    }
+}
+
+// vim: ft=cpp

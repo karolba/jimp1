@@ -1,0 +1,27 @@
+[==========] Running 10 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 10 tests from PrimeTester
+[ RUN      ] PrimeTester.smallPrimeNumber
+[       OK ] PrimeTester.smallPrimeNumber
+[ RUN      ] PrimeTester.smallPrimeNumber2
+[       OK ] PrimeTester.smallPrimeNumber2
+[ RUN      ] PrimeTester.primeNumber
+[       OK ] PrimeTester.primeNumber
+[ RUN      ] PrimeTester.bigPrimeNumber
+[       OK ] PrimeTester.bigPrimeNumber
+[ RUN      ] PrimeTester.primeNumberWithDecimal
+[       OK ] PrimeTester.primeNumberWithDecimal
+[ RUN      ] PrimeTester.smallNotPrimeNumber
+[       OK ] PrimeTester.smallNotPrimeNumber
+[ RUN      ] PrimeTester.smallPrimeOddNumber
+[       OK ] PrimeTester.smallPrimeOddNumber
+[ RUN      ] PrimeTester.bigNotPrimeNumber
+[       OK ] PrimeTester.bigNotPrimeNumber
+[ RUN      ] PrimeTester.zero
+[       OK ] PrimeTester.zero
+[ RUN      ] PrimeTester.negativeNumber
+[       OK ] PrimeTester.negativeNumber
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test case ran.
+[  PASSED  ] 10 tests.
+

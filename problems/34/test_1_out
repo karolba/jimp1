@@ -1,0 +1,26 @@
+[==========] Running 10 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 10 tests from VectorTest
+[ RUN      ] VectorTest.constructionAndDestruction
+[       OK ] VectorTest.constructionAndDestruction
+[ RUN      ] VectorTest.addingSingleElement
+[       OK ] VectorTest.addingSingleElement
+[ RUN      ] VectorTest.addingMultipleElements
+[       OK ] VectorTest.addingMultipleElements
+[ RUN      ] VectorTest.resizeAfterAddingElements
+[       OK ] VectorTest.resizeAfterAddingElements
+[ RUN      ] VectorTest.reserve
+[       OK ] VectorTest.reserve
+[ RUN      ] VectorTest.destructOfNotEmptyVector
+[       OK ] VectorTest.destructOfNotEmptyVector
+[ RUN      ] VectorTest.clone
+[       OK ] VectorTest.clone
+[ RUN      ] VectorTest.popBack
+[       OK ] VectorTest.popBack
+[ RUN      ] VectorTest.insert
+[       OK ] VectorTest.insert
+[ RUN      ] VectorTest.erase
+[       OK ] VectorTest.erase
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test case ran.
+[  PASSED  ] 10 tests.

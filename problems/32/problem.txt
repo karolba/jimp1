@@ -1,0 +1,33 @@
+// author: Grzegorz Prowadzacy
+#ifndef SPLIT_WORDS_H
+#define SPLIT_WORDS_H
+
+/** Tresc zadania:
+Panstwa zadaniem jest napisanie funkcji splitTextIntoWords(), ktora zrobi to, co mowi jej nazwa, czyli przyjmie ciag znakow i podzieli na wyrazy zwracajac informacje ile w sumie jest tam wyrazow. Parametr words powinien zostać odpowiednio zainicjalizowany. Podzial na wyrazy ma sie odbywac w oparciu o funkcje http://www.cplusplus.com/reference/cctype/isalnum/ . Jesli tekst nie bedzie zawieral zadnego z wyrazow, to parametr words powinien byc zainicjalizowany wartoscia NULL.
+
+Przypadki testowe:
+    - text == NULL
+    - text jest pusty
+    - brak wyrazow
+    - jeden wyraz
+    - normalne zdanie
+    - wzor matematyczny
+
+Prosze tez pamietac aby poza plikiem z rozwiazaniem zalaczyc rowniez ten plik naglowkowy o nazwie splitWords.h, bez robienia w nim jakichkolwiek zmian.
+
+Podpowiedzi:
+    - polecam uzyc gotowca do kopiowania tekstu: http://www.cplusplus.com/reference/cstring/
+    - polecam miec oddzielna funkcje, ktora zliczy ilosc wyrazow, ktora zostanie uzyta przez splitTextIntoWords
+    - jak ktos chce moze sie pobawic najbardziej-duzo-robiaca funkcja jezyka C, czyli realloc: http://www.cplusplus.com/reference/cstdlib/realloc/
+**/
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+        long splitTextIntoWords(const char* text, char*** words);
+#ifdef __cplusplus
+    }
+#endif
+
+#endif // SPLIT_WORDS_H
