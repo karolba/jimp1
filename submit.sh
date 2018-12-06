@@ -10,7 +10,7 @@ if [[ $# == 0 ]]; then
     set -- solution.c
 fi
 
-PATH="$PATH:$(dirname "$(readlink -f "$0"))/.exodus"
+PATH="$PATH:$(dirname "$(readlink -f "$0"))/.exodus/bin"
 
 export SUBMITBASEURL='http://10.156.207.151/domjudge/'
 
