@@ -7,5 +7,3 @@ failed_input() { echo -en '\e[100mInput:\e[0m\n\e[36m'; cat "$1"; echo -en '\e[0
 
 
 set -uve
-g++ -xc++ -std=c++17 test_1_in solution.c -I ../../gtest/include -L ../../gtest/lib -lgtest -lgtest_main -pthread -osolution_test
-./solution_test

@@ -7,7 +7,7 @@ failed_input() { echo -en '\e[100mInput:\e[0m\n\e[36m'; cat "$1"; echo -en '\e[0
 
 
 set -uve
-gcc -g -O2 -static -pipe -Wall solution.c -lm -o solution
+gcc -O2 -static -pipe -Wall solution.c -lm -o solution
 cwdiff <(./solution < test_1_in) test_1_out || failed_input test_1_in
 cwdiff <(./solution < test_2_in) test_2_out || failed_input test_2_in
 cwdiff <(./solution < test_3_in) test_3_out || failed_input test_3_in
