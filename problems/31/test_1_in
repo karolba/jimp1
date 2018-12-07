@@ -250,5 +250,3 @@ static void deallocateMemory(char** words)
     }
     free(words);
 }
-
-// vim: ft=cpp

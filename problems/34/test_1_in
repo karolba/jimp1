@@ -366,13 +366,9 @@ TEST_F(VectorTest, insert)
     const T array2[] = {1,2,3,4,5,6,7};
     const size_t array2Size = sizeof(array2)/sizeof(array2[0]);
     
-    std::cerr << "a --\n";
     insert(v, array2[1], 1);
-    std::cerr << "b --\n";
     insert(v, array2[3], 3);
-    std::cerr << "c --\n";
     insert(v, array2[5], 5);
-    std::cerr << "d --\n";
 
     ASSERT_EQ(array2Size, size(v)) << array2String(array2, array2Size) << ", " << vector2String(v);
     ASSERT_EQ(array2Size, capacity(v)) << array2String(array2, array2Size) << ", " << vector2String(v);

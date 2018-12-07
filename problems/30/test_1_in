@@ -97,5 +97,3 @@ int main(int argc, char *argv[])
     GTEST_FLAG(print_time) = false;
     return RUN_ALL_TESTS();
 }
-
-// vim: ft=cpp

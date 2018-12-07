@@ -1,0 +1,16 @@
+Państwa zadaniem jest wyświetlenie kilometrów/godzinę i mil/godzinę (mile uniwersalne). Proszę o zaokrąglenie wyniku do liczb całkowitych.
+Proszę użyć odpowiednich formaterów funkcji printf, aby liczby mieściły się na określonej szerokości. Oczekujemy wypisania czegoś takiego.
+
+------------------
+| 140km/h|  87m/h|
+------------------
+| 100km/h|  62m/h|
+------------------
+|  90km/h|  56m/h|
+------------------
+|  50km/h|  31m/h|
+------------------
+|  20km/h|  12m/h|
+------------------
+
+Jak ktoś zahardcoduje wyświetlanie w 10 printfach i nic więcej to nie jest to zrobione zadanie!

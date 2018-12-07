@@ -230,5 +230,3 @@ static void deallocateMemory(char** words, size_t wordCount)
     }
     free(words);
 }
-
-// vim: ft=cpp

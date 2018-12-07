@@ -187,5 +187,3 @@ void initialArayWithSmallRandomNumbers(T array[], size_t elements)
         array[i] = rand()%10;
     }
 }
-
-// vim: ft=cpp

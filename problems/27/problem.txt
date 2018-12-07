@@ -9,6 +9,7 @@ Panstwa zadaniem jest napisanie funkcji baseName(), ktora dla podanej sciezki pl
 1) nie zawierajaca rozszerzenia
 2) nie zawierajaca sciezki do pliku
 3) funkcja ma zwrocic odpowiednia wartosc ze zbioru ponizej
+Parametr wejsciowy fileBaseName ma rozmiar taki jak tablica filePath, wiec nie powinno byc problemu z wielkoscia.
 
 Polecam przejrzec funkcje z http://www.cplusplus.com/reference/cstring/ i wybrac sobie cos do uzycia.
 
