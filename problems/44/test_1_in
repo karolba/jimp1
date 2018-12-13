@@ -1,0 +1,424 @@
+/************** file: #include "list.h" **************/
+// author: Grzegorz Prowadzacy
+#ifndef ForwardList_H
+#define ForwardList_H
+
+#include <stddef.h> // size_t
+#include <stdint.h> // int_fast32_t
+#include <stdbool.h>
+
+/** Tresc zadania: (UWAGA: To bardzo wazne zadanie, w srodku nocy nalezy umiec takie zadania robic!)
+Panstwa zadaniem jest napisanie listy jednokrotnie wiązanej, oraz funkcji do jej obslugi. Nasz ForwardList ma zawierać elementy typu T (szczegoly ponizej). Nasza implementacja wzorowana C++owym std::forward_list, aczkolwiek inna niz: http://www.cplusplus.com/reference/forward_list/forward_list/
+Jest to lista, skladajaca sie z elementow ForwardList, gdzie kazdy wskazuje na nastepnego.
+
+Ma to byc struktura ForwardList, ktora zawiera w sobie:
+    - wartosc w aktualnym wezne (ang. value)
+    - wskaznik na nastepny element (ang. next)
+
+Poza struktura ForwardList prosze zaimplementowac pewne funkcje, ktorych deklaracje znajduja sie ponizej.
+
+Prosze tez pamietac aby poza plikiem z rozwiazaniem zalaczyc rowniez ten plik naglowkowy o nazwie list.h, bez robienia w nim jakichkolwiek zmian.
+
+Podpowiedzi:
+    - polecam ogarnac operator trojargumentowy: ?:,
+    - polecam dopilnowac aby uzyc juz napisanych funkcji wewnatrz innych, zamiast robic to samo np.:
+      clear() w destruct(), lub constructLinst1 w constructLinstN() itp.
+**/
+
+
+typedef int_fast32_t T;
+
+#ifdef __cplusplus
+    extern "C"
+    {
+#endif
+        struct ForwardList;
+        typedef struct ForwardList ForwardList;
+
+        /// Construct and destruct functions:
+        // [zaj]funkcja, ktora zwraca ForwardList zaalokowany dynamicznie z wartoscia w pierwszym wezne podana w argumencie:
+        ForwardList* constructList(T element);
+        // [zaj]funkcja, ktora zwraca ForwardList zaalokowany dynamicznie z okreslona iloscia wezlow zawierajacych wartosc podana w argumencie
+        ForwardList* constructListN(size_t elements, T value);
+
+        // [zaj]funkcja, ktora usuwa cala liste wierzcholkow ForwardLista zwalniajac przy tym pamiec zaalokowana przez l
+        void destruct(ForwardList* l);
+
+        // funkcja, ktora kopiuje nasz ForwardList i jego elementy (gleboka kopia), podobnie jak C++owy http://www.cplusplus.com/reference/forward_list/forward_list/operator=/
+        ForwardList* cloneList(const ForwardList* l);
+
+        // [zaj]funkcja, ktora zwalnia pamiec calej ForwardList, zostawiajac nasza liste w takim stanie jak po zawolaniu: constructList(0);
+        void clear(ForwardList* l);
+
+
+        /// Comfort functions:
+        // funkcja zwraca N-ty wezel z ForwardList, a jesli nie ma takowego NULL, takiej funkcji nie ma w std::forward_list:
+        ForwardList* getNode(ForwardList* l, size_t index);
+        // [zaj]funkcja zwraca wartosc danego wezla, mamy taka funkcje aby nie grzebac po bebechach naszego ForwardList, takiej funkcji nie ma w std::forward_list:
+        T get(const ForwardList* l);
+        // funkcja ustawia wartosc danego wezla, mamy taka funkcje aby nie grzebac po bebechach naszego ForwardList, takiej funkcji nie ma w std::forward_list:
+        void setNodeValue(ForwardList* l, T value);
+        // [zaj]funkcja zwraca wskaznik do kolejnego wezla, mamy taka funkcje aby nie grzebac po bebechach naszego ForwardList, takiej funkcji nie ma w std::forward_list:
+        ForwardList* nextNode(const ForwardList* l);
+
+
+        /// Capasity functions:
+        // [zaj]funkcja zwraca ilosc elementow ForwardLista, co prawda std::forward_list nie zawiera tej metody ze wzgledu na jej nieoptymalnosc
+        size_t size(const ForwardList* l);
+        // funkcja ustawiajaca zadana ilosc elementow ForwardLista, jesli zmniejszamy zostaja obciete ostatnie elementy, jesli zwiekszamy nowe elementy beda mialy wartosc 0, zupelnie jak: http://www.cplusplus.com/reference/forward_list/forward_list/resize/
+        void resize(ForwardList* l, size_t newSize);
+//        // funkcja zwraca true jesli ForwardList nie zawiera elementow, zupelnie jak: // http://www.cplusplus.com/reference/ForwardList/ForwardList/empty/
+//        bool empty(const ForwardList* l);
+
+
+        ///  Element access function:
+        // [zaj]funkcja zwraca wskaznik do wartosci elementu z ForwardList o zadanym indeksie, w razie wyjscia poza tablice zwraca NULL, oczywiscie std::forward_list nie zawiera takiej metody ze wzgledu na jej nieoptymalnosc
+        T* at(ForwardList* l, size_t index);
+        // [zaj]zwraca wskaznik do wartosci pierwszego element ForwardLista, podobna do: http://www.cplusplus.com/reference/forward_list/forward_list/front/
+        T* front(ForwardList* l);
+        // [zaj]zwraca wskaznik do wartosci ostatniego element listy, oczywiscie std::forward_list nie zawiera takiej metody ze wzgledu na jej nieoptymalnosc:
+        T* back(ForwardList* l);
+
+
+        ///  Modifiers:
+        // [zaj]funkcja wrzucajaca element na poczatek ForwardLista, a nastepnie zwraca liste zaczynajaca sie od wstawionego elementu, podobnie jak: http://www.cplusplus.com/reference/forward_list/forward_list/push_front/
+        ForwardList* push_front(ForwardList* l, T element);
+        // [zaj]funkcja usuwajaca element z poczatku ForwardLista, a nastepnie zwraca liste od drugiego elementu, podobna do: http://www.cplusplus.com/reference/forward_list/forward_list/pop_front/
+        ForwardList* pop_front(ForwardList* l);
+
+        // [zaj]funkcja zamiast dotychczasowego kontekstu w liscie ustawia tablice elementow, podobnie jak: http://www.cplusplus.com/reference/forward_list/forward_list/assign/
+        void assign(ForwardList* l, size_t elementCount, const T elements[]);
+
+        // funkcja usuwajaca element z ForwardLista o zadanym indeksie, zwracajaca wezel tuz za usunietym elementem, podobna do: http://www.cplusplus.com/reference/forward_list/forward_list/erase_after/
+        ForwardList* erase_after(ForwardList* l, size_t index);
+        // funkcja wstawiajaca dany element na pozycje o wskazanym indeksie przesuwajac nastepne elementy w prawo zwracajaca pozycje wstawienia elementu, podobna do: http://www.cplusplus.com/reference/forward_list/forward_list/insert_after/
+        ForwardList* insert_after(ForwardList* l, size_t index, T element);
+
+
+        /// Operations:
+        // funkcja, ktora zwroci nasza liste po odwroceniu kolejnosci jej elementow, podobna do: http://www.cplusplus.com/reference/forward_list/forward_list/reverse/
+        ForwardList* reverse(ForwardList* l);
+        // funkcja, ktora zwroci nasza liste z posortowanymi elementami, podobna do: http://www.cplusplus.com/reference/forward_list/forward_list/sort/
+        ForwardList* sort(ForwardList* l);
+        // funkcja, ktora polecam zaimplementowac (ale testy tego nie sprawdza), ktora wyswietli nasza liste, polecam pythoniczna forme
+        void printList(ForwardList* l);
+
+
+        /// Functions to cooperate with function pointers:
+        // [zaj]funkcja, ktora dla kazdego elementu listy zawola funkcje przekazana jako argument:
+        void for_each(ForwardList* l, void(*f)(ForwardList* current));
+        // funkcja, ktora usunie z listy wszystkie elementy, dla ktorych wartosc z funkcji przekazanej jako argument zwroci true, podobna do: http://www.cplusplus.com/reference/forward_list/forward_list/remove_if/
+        ForwardList* remove_if(ForwardList* l, bool(*predicate)(ForwardList* current));
+
+        /** inne, fajne funkcje ForwardLista dla ambitnych, na ktore nie dostarczylem testow:
+         http://www.cplusplus.com/reference/forward_list/forward_list/splice_after/
+         http://www.cplusplus.com/reference/forward_list/forward_list/remove/
+         http://www.cplusplus.com/reference/forward_list/forward_list/unique/
+         http://www.cplusplus.com/reference/forward_list/forward_list/merge/ **/
+
+#ifdef __cplusplus
+    }
+#endif
+
+#endif // ForwardList_H
+
+
+/************** file: "listTest.cc" **************/
+#include <iterator> // distance()
+#include <string>   // string, to_string()
+#include <forward_list>
+#include <gtest/gtest.h>
+
+//#include "list.h"
+
+
+namespace
+{
+using namespace std;
+using namespace ::testing;
+}
+
+typedef std::forward_list<T> std_forward_list;
+
+
+static string forwardList2String(ForwardList *l);
+static string stdForwardList2String(const std_forward_list *l);
+static string array2String(const T* const array, size_t elements);
+
+static void initialArayWithSmallRandomNumbers(T array[], size_t elements);
+static size_t calculateSizeOfList(const std_forward_list* l);
+
+static void compareLists(const ForwardList* l1, const std_forward_list* l2);
+
+
+class ListTest : public ::testing::Test
+{
+};
+
+TEST_F(ListTest, simpleConstruction)
+{
+    const size_t expectedElements = 1;
+
+    const T value = 44;
+    ForwardList* l = constructList(value);
+
+    ASSERT_EQ(expectedElements, size(l));
+    ASSERT_EQ(value, get(l));
+
+    ASSERT_NE(nullptr, front(l));
+    ASSERT_EQ(value, *front(l));
+
+    ASSERT_NE(nullptr, back(l));
+    ASSERT_EQ(value, *back(l));
+
+    destruct(l);
+}
+
+TEST_F(ListTest, constructionMultiNodeList)
+{
+    const size_t expectedElements = 5;
+
+    const T value = 44;
+    ForwardList* l = constructListN(expectedElements, value);
+
+    ASSERT_EQ(expectedElements, size(l));
+    ASSERT_EQ(value, get(l));
+
+    ASSERT_NE(nullptr, front(l));
+    ASSERT_EQ(value, *front(l));
+
+    ASSERT_NE(nullptr, back(l));
+    ASSERT_EQ(value, *back(l));
+
+    const std_forward_list l2(expectedElements, value);
+    compareLists(l, &l2);
+
+    destruct(l);
+}
+
+TEST_F(ListTest, addingSingleElement)
+{
+    const size_t expectedElements = 2;
+
+    const T element1 = 44, element2 = 55;
+
+    ForwardList* l = constructList(element1);
+
+    l = push_front(l, element2);
+
+    ASSERT_EQ(expectedElements, size(l));
+
+    ASSERT_NE(nullptr, at(l, 0));
+    ASSERT_EQ(element2, *at(l, 0));
+    ASSERT_NE(nullptr, at(l, 1));
+    ASSERT_EQ(element1, *at(l, 1));
+
+    ASSERT_NE(nullptr, front(l));
+    ASSERT_EQ(element2, *front(l));
+
+    ASSERT_NE(nullptr, back(l));
+    ASSERT_EQ(element1, *back(l));
+
+    destruct(l);
+}
+
+TEST_F(ListTest, assign)
+{
+    const T array[] = {3, 5, 2, 7, 8, 3, 2, 4, -1, 22, 44, 6};
+    const size_t arraySize = sizeof(array)/sizeof(array[0]);
+    ForwardList* l1 = constructList(array[2]);
+    assign(l1, arraySize, array);
+
+    std_forward_list l2;
+    l2.assign(array, array+arraySize);
+
+    compareLists(l1, &l2);
+    for (size_t i=0; i<arraySize; ++i)
+    {
+        ASSERT_NE(nullptr, at(l1, i));
+        ASSERT_EQ(array[i], *at(l1, i)) << array2String(array, arraySize) << ", " << forwardList2String(l1);
+    }
+
+    ASSERT_NE(nullptr, front(l1));
+    ASSERT_EQ(*array, *front(l1));
+
+    ASSERT_NE(nullptr, back(l1));
+    ASSERT_EQ(*(array+arraySize-1), *back(l1));
+
+    destruct(l1);
+}
+
+TEST_F(ListTest, pushAndPopfront)
+{
+    const T array[] = {3, 5, 2, 7, 8, 3, 2, 4, -1, 22, 44, 6};
+    const size_t arraySize = sizeof(array)/sizeof(array[0]);
+    ForwardList* l1 = constructList(array[0]);
+
+    std_forward_list l2;
+    l2.push_front(array[0]);
+    for(size_t i=1; i<arraySize; ++i)
+    {
+        T value = array[i];
+
+        l1 = push_front(l1, value);
+        l2.push_front(value);
+
+        compareLists(l1, &l2);
+    }
+
+    while(calculateSizeOfList(&l2) > 1)
+    {
+        l1 = pop_front(l1);
+        l2.pop_front();
+
+        compareLists(l1, &l2);
+    }
+
+    destruct(l1);
+}
+
+static void doubleNodeValue(ForwardList* l)
+{
+    const T oldValue = get(l);
+    setNodeValue(l, 2*oldValue);
+}
+
+TEST_F(ListTest, for_each)
+{
+    const T array[] = {3, 5, 2, 7, 8, 3, 2, 4, -1, 22, 44, 6};
+    const size_t arraySize = sizeof(array)/sizeof(array[0]);
+    ForwardList* l1 = constructList(array[2]);
+    assign(l1, arraySize, array);
+
+    std_forward_list l2;
+    for(size_t i=arraySize-1; i<arraySize; --i)
+    {
+        l2.push_front(2*array[i]);
+    }
+    for_each(l1, doubleNodeValue);
+
+    compareLists(l1, &l2);
+
+    destruct(l1);
+}
+
+
+//TEST_F(ListTest, resizeAfterAddingElements)
+//{
+//}
+
+//TEST_F(ListTest, clone)
+//{
+//}
+
+//TEST_F(ListTest, insert)
+//{
+//}
+
+//TEST_F(ListTest, erase)
+//{
+//}
+
+//TEST_F(ListTest, sort)
+//{
+//}
+
+//TEST_F(ListTest, reverse)
+//{
+//}
+
+////////////////////////////////////////////////////////////////////////////////// main function:
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    GTEST_FLAG(print_time) = false;
+    return RUN_ALL_TESTS();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////// function definitions:
+static string array2String(const T* const array, size_t elements)
+{
+    string s = "array(" + to_string(elements) + ") = {";
+    if (array)
+    {
+        s += to_string(array[0]);
+        for (size_t i=1; i<elements; ++i)
+        {
+            s += ", " + to_string(array[i]);
+        }
+    }
+    s += "}";
+
+    return s;
+}
+
+static string forwardList2String(ForwardList* l)
+{
+    if (l)
+    {
+        string s = "ForwardList(" + to_string(size(l)) + ") = {";
+        s += to_string(*at(l, 0));
+        for (size_t i=1; i<size(l); ++i)
+        {
+            s += ", " + to_string(*at(l, i));
+        }
+        s += "}";
+
+        return s;
+    }
+    else
+    {
+        return "{}";
+    }
+}
+
+static string stdForwardList2String(const std_forward_list *l)
+{
+    if (l)
+    {
+        size_t sizeOfList = calculateSizeOfList(l);
+        string s = "std::forward_list(" + to_string(sizeOfList) + ") = {";
+        for(auto it=cbegin(*l); it!=cend(*l); ++it)
+        {
+            if (it != cbegin(*l))
+            {
+                s += ", ";
+            }
+            s += to_string(*it);
+        }
+        s += "}";
+
+        return s;
+    }
+    else
+    {
+        return "{}";
+    }
+}
+
+static void initialArayWithSmallRandomNumbers(T array[], size_t elements)
+{
+    for (size_t i=0; i<elements; ++i)
+    {
+        array[i] = rand()%10;
+    }
+}
+
+static size_t calculateSizeOfList(const std_forward_list* l)
+{
+    return distance(cbegin(*l), cend(*l));
+}
+
+static void compareLists(const ForwardList* l1, const std_forward_list* l2)
+{
+    ASSERT_EQ(calculateSizeOfList(l2), size(l1));
+    size_t positionCounter = 0;
+    for(auto it=cbegin(*l2); it!=cend(*l2); ++it, ++positionCounter)
+    {
+        ASSERT_EQ(*it, get(l1)) << "position: " << positionCounter;
+        l1 = nextNode((ForwardList*)l1);
+    }
+}
+
+// vim: ft=cpp
