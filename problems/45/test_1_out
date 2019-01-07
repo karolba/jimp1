@@ -1,0 +1,36 @@
+[==========] Running 15 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 15 tests from ListTest
+[ RUN      ] ListTest.simpleConstruction
+[       OK ] ListTest.simpleConstruction
+[ RUN      ] ListTest.constructionMultiNodeList
+[       OK ] ListTest.constructionMultiNodeList
+[ RUN      ] ListTest.addingSingleElementWithPushFront
+[       OK ] ListTest.addingSingleElementWithPushFront
+[ RUN      ] ListTest.assign
+[       OK ] ListTest.assign
+[ RUN      ] ListTest.clear
+[       OK ] ListTest.clear
+[ RUN      ] ListTest.pushAndPopfront
+[       OK ] ListTest.pushAndPopfront
+[ RUN      ] ListTest.for_each
+[       OK ] ListTest.for_each
+[ RUN      ] ListTest.cloneList
+[       OK ] ListTest.cloneList
+[ RUN      ] ListTest.sorting
+[       OK ] ListTest.sorting
+[ RUN      ] ListTest.resizeAfterAddingElements
+[       OK ] ListTest.resizeAfterAddingElements
+[ RUN      ] ListTest.insert_after
+[       OK ] ListTest.insert_after
+[ RUN      ] ListTest.erase_after
+[       OK ] ListTest.erase_after
+[ RUN      ] ListTest.removeIf
+[       OK ] ListTest.removeIf
+[ RUN      ] ListTest.unique
+[       OK ] ListTest.unique
+[ RUN      ] ListTest.reverse
+[       OK ] ListTest.reverse
+[----------] Global test environment tear-down
+[==========] 15 tests from 1 test case ran.
+[  PASSED  ] 15 tests.
